@@ -17,25 +17,26 @@
                             </div>
                         </div>
 
-                        <div class="form-group row mt-3">
+                        <div class="form-group row mt-2">
                             <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
                             <div class="col-md-6">
                                 <input type="password" id="password" class="form-control" [formControlName]="'password'" name="password" required>
-                                <span *ngIf="!loginForm.get('password')?.valid && loginForm.get('password')?.touched">
-                                    <p class="text-danger">Password can not be empty.</p>
+                                <span *ngIf="loginForm.get('password')?.errors && loginForm.get('password')?.touched">
+                                    <p class="text-danger" *ngIf="loginForm.get('password')?.errors?.required">Password can not be empty.</p>
+                                    <p class="text-danger" *ngIf="loginForm.get('password')?.errors?.pattern">Password must have 6 characters min.</p>
                                 </span>
                             </div>
                         </div>
 
                         <span class="col-md-6 offset-md-4">
-                            <button type="submit" class="login mt-3">
+                            <button type="submit" class="login mt-2">
                                 Login
                             </button>
                             <span style="padding-left: 15px">New to SpringReddit? <a routerLink="/signup">SIGN UP</a></span>
                         </span>   
-                        <!-- <div class="login-failed" *ngIf='this.isError'>
+                        <div class="login-failed border rounded" *ngIf='this.isError'>
                              <p class="login-failed-text">Login Failed. Please check your credentials and try again.</p>   
-                        </div> -->
+                        </div>
                     </form>
                 </div>
             </div>

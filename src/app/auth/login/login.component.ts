@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, PatternValidator, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../shared/auth.service';
 import { LoginRequestPayload } from './login.request.payload';
 
@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
   
   loginForm!: FormGroup;
   loginRequestPayload!: LoginRequestPayload;
+  isError: boolean = false;
   
   constructor(private authService: AuthService) {
     this.loginRequestPayload = {
@@ -23,8 +24,8 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.loginForm = new FormGroup({
       username: new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required)
-    })
+      password: new FormControl('', [Validators.required, Validators.pattern('.{6,}')])
+    });
   }
 
   login() {
@@ -33,7 +34,10 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(this.loginRequestPayload).subscribe(response => {
       console.log('Success');
-    })
+    }, error => {
+      this.isError = true;
+      console.log('Error: ' + error.message);
+    });
   }
 
 }
